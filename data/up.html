@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./dist/webuploader.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="up">插件上传</div>
+    <img src=""  id="img">
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./dist/webuploader.min.js"></script>
+    <script>
+      // 初始化Web Uploader
+      var uploader = WebUploader.create({
+        // 选完文件后，是否自动上传。
+        auto: true,
+        // swf文件路径
+        swf: "./dist/Uploader.swf",
+        // 文件接收服务端。
+        server: "http://127.0.0.1/file",
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: "#up",
+        // 只允许选择图片文件。
+        accept: {
+          title: "Images",
+          extensions: "gif,jpg,jpeg,bmp,png",
+          mimeTypes: "image/*"
+        }
+      });
+      uploader.on("uploadSuccess", function(f, r) {
+        console.log(r._raw);
+        $("#img").attr("src","http://127.0.0.1"+r._raw)
+      });
+    </script>
+  </body>
+</html>

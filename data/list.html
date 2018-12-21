@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style>
+			.list {
+				padding: 12px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="ctn">
+			<ul>
+				<li>标题：<b></b>作者：<b></b>点击量：<b></b></li>
+			</ul>
+		</div>
+		<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+		<script src="./template-web.js"></script>
+		<script id="news" type="text/html">
+			<ul>
+			    {{each data value i}}
+			                 <!-- <li>索引 {{i + 1}} ：{{value}}</li> -->
+			                 <li class='list'>[{{i + 1}}]===>标题：<b>{{value.title}}</b>作者：<b>{{value.author}}</b>点击量：<b>{{value.hits}}</b></li>
+			    {{/each}}
+			</ul>
+			<!-- {{$data}} -->
+		</script>
+
+		<script>
+			function init() {
+				$.post(
+					"http://127.0.0.1/all",
+					{
+						pi: 1,
+						ps: 11
+					},
+					function(resp) {
+						console.log(resp);
+						// var html = "<ul>";
+						// for (var i = 0; i < resp.data.length; i++) {
+						// 	var t = `<li class='list'>标题：<b>${
+						// 		resp.data[i].title
+						// 	}</b>作者：<b>${
+						// 		resp.data[i].author
+						// 	}</b>点击量：<b>${resp.data[i].hits}</b></li>`;
+						// 	var t1 =
+						// 		"<li class='list'>标题：<b>" +
+						// 		resp.data[i].title +
+						// 		"</b>作者：<b>" +
+						// 		resp.data[i].author +
+						// 		"</b>点击量：<b>" +
+						// 		resp.data[i].hits +
+						// 		"</b></li>";
+						// 	html += t;
+						// }
+						// html += "</ul>";
+						document.getElementById("ctn").innerHTML = template(
+							"news",
+							resp
+						);
+						document.querySelector("#ctn").innerHTML = html;
+					}
+				);
+			}
+			init();
+
+			var data = {
+				title: "基本例子",
+				isAdmin: true,
+				list: ["文艺", "博客", "摄影", "电影", "民谣", "旅行", "吉他"]
+			};
+		</script>
+	</body>
+</html>

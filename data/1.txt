@@ -1,0 +1,36 @@
+package main
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
+)
+
+func main() {
+
+	type data struct {
+		Id   int
+		Name string
+		Logo string
+		jwt.StandardClaims
+	}
+	d := data{
+		Id:   100,
+		Name: "test",
+		Logo: "https://blog.zxysilent.com/logo.png",
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Minute * 20).Unix(),
+		},
+	}
+	jwts := jwt.NewWithClaims(jwt.SigningMethodHS256, d)
+	token, err := jwts.SignedString([]byte(`key`))
+	fmt.Println(token, err)
+	////
+
+	d1 := &data{}
+	j, e := jwt.ParseWithClaims(token, d1, func(token *jwt.Token) (interface{}, error) {
+		return []byte("key"), nil
+	})
+	fmt.Println(j.Valid, e, d1)
+}
